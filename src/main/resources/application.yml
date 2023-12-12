@@ -33,10 +33,7 @@ server:
       enabled: true
       force: true
   port: 8080
-#
-#springdoc:
-#  version: v1.0.0
-#  swagger-ui:
-#    path: /swagger-filmo.html
-#    tagsSorter: alpha
-#    operationsSorter: alpha
+
+springdoc:
+  swagger-ui:
+    path: /swagger-vote.html
