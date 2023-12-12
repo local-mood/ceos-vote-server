@@ -1,0 +1,42 @@
+spring:
+
+  profiles:
+    include: secret
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://vote-rds.csucgot1eysx.ap-northeast-2.rds.amazonaws.com:3306/votedb
+    username: admin
+    password: 12345678
+
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+    hibernate:
+      properties:
+        hibernate.format_sql: true
+      ddl-auto: validate
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+  port: 8080
+#
+#springdoc:
+#  version: v1.0.0
+#  swagger-ui:
+#    path: /swagger-filmo.html
+#    tagsSorter: alpha
+#    operationsSorter: alpha
