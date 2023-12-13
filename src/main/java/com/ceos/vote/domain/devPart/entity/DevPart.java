@@ -1,4 +1,4 @@
-package com.ceos.vote.domain.dev_part.entity;
+package com.ceos.vote.domain.devPart.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
