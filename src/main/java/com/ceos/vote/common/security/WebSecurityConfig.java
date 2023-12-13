@@ -1,8 +1,8 @@
-package com.ceos.vote.common.config;
+package com.ceos.vote.common.security;
 
 import com.ceos.vote.exception.JwtAuthenticationEntryPoint;
-import com.ceos.vote.jwt.JwtAuthenticationFilter;
-import com.ceos.vote.jwt.JwtTokenProvider;
+import com.ceos.vote.common.jwt.JwtAuthenticationFilter;
+import com.ceos.vote.common.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
