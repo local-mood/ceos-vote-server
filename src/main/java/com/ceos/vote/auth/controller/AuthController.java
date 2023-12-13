@@ -88,5 +88,22 @@ public class AuthController {
         }
     }
 
+    // 로그아웃
+    @PostMapping("/logout")
+    public ResponseEntity<NormalResponseDto> logout(@RequestHeader("Authorization") String requestAccessToken) {
+
+        // Access Token을 무효화하여 로그아웃 처리
+        authService.logout(requestAccessToken);
+
+        ResponseCookie responseCookie = ResponseCookie.from("refresh-token", "")
+                .maxAge(0)
+                .path("/")
+                .build();
+
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
+                .build();
+    }
 
 }
