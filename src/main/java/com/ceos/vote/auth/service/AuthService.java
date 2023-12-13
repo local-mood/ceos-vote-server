@@ -156,6 +156,23 @@ public class AuthService {
     }
 
 
+    // 로그아웃
+    @Transactional
+    public void logout(String requestAccessTokenInHeader) {
+        String requestAccessToken = resolveToken(requestAccessTokenInHeader);
+        String principal = getPrincipal(requestAccessToken);
+
+        // Redis 또는 다른 저장소에서 관련 정보 삭제
+        String refreshToken = redisService.getValues("refresh-token:" + SERVER + ":" + principal);
+        if (refreshToken != null) {
+            redisService.deleteValues("refresh-token:" + SERVER + ":" + principal);
+        }
+
+        long expiration = jwtTokenProvider.getTokenExpirationTime(requestAccessToken);
+        redisService.setValuesWithTimeout(requestAccessToken,
+                "logout",
+                expiration);
+    }
 
     public boolean findUserByEmail(String email) { return memberRepository.existsByEmail(email);}
     public boolean findUserByUserid(String userid) { return memberRepository.existsByUserid(userid);}
