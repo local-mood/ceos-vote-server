@@ -50,6 +50,19 @@ public class AuthService {
     }
 
 
+    // 로그인
+    @Transactional
+    public TokenDto login(LoginRequestDto loginRequestDto) {
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(loginRequestDto.getEmail(), loginRequestDto.getPassword());
+
+        Authentication authentication = authenticationManager.getObject()
+                .authenticate(authenticationToken);
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return generateToken(SERVER, authentication.getName(), getAuthorities(authentication));
+    }
+
 
     public boolean findUserByEmail(String email) { return memberRepository.existsByEmail(email);}
     public boolean findUserByUserid(String userid) { return memberRepository.existsByUserid(userid);}
