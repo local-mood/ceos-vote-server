@@ -1,15 +1,8 @@
 package com.ceos.vote.domain.member.entity;
 
-import com.ceos.vote.domain.dev_part.entity.DevPart;
+import com.ceos.vote.domain.devPart.entity.DevPart;
 import com.ceos.vote.domain.team.entity.Team;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -43,11 +36,14 @@ public class Member {
   @JoinColumn(name = "dev_part_id")
   private DevPart devPart;
 
+  @Enumerated(EnumType.STRING)
+  private Role role;
+
   @Builder
-  public Member(Long id, String username, String userId, String email, String password, Boolean voteFlagMember, Boolean voteFlagTeam, Integer voteCnt, Team team, DevPart devPart) {
+  public Member(Long id, String username, String userid, String email, String password, Boolean voteFlagMember, Boolean voteFlagTeam, Integer voteCnt, Team team, DevPart devPart) {
     this.id = id;
     this.username = username;
-    this.userid = userId;
+    this.userid = userid;
     this.email = email;
     this.password = password;
     this.voteFlagMember = voteFlagMember;
@@ -55,5 +51,7 @@ public class Member {
     this.voteCnt = voteCnt;
     this.team = team;
     this.devPart = devPart;
+    this.role = Role.ROLE_USER;
+
   }
 }
