@@ -1,8 +1,8 @@
 package com.ceos.vote.common.security;
 
-import com.ceos.vote.exception.JwtAuthenticationEntryPoint;
-import com.ceos.vote.common.jwt.JwtAuthenticationFilter;
-import com.ceos.vote.common.jwt.JwtTokenProvider;
+import com.ceos.vote.auth.exception.JwtAuthenticationEntryPoint;
+import com.ceos.vote.auth.jwt.filter.JwtAuthenticationFilter;
+import com.ceos.vote.auth.jwt.provider.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,7 +15,7 @@ import org.springframework.security.config.annotation.web.configurers.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import com.ceos.vote.exception.JwtAccessDeniedHandler;
+import com.ceos.vote.auth.exception.JwtAccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
