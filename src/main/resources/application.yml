@@ -3,6 +3,12 @@ spring:
   profiles:
     include: secret
 
+  jwt:
+    token:
+      secret: ${jwt.token.secret}
+      access-token-validity-in-seconds: ${jwt.token.access-token-validity-in-seconds}
+      refresh-token-validity-in-seconds: ${jwt.token.refresh-token-validity-in-seconds}
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://vote-rds.csucgot1eysx.ap-northeast-2.rds.amazonaws.com:3306/votedb
