@@ -33,9 +33,9 @@ public class MemberRequestDto {
             "영문 대소문자, 숫자, 특수문자를 1개 이상 포함해야 합니다.")
     private String password;
 
-    private Boolean voteFlagMember;
-    private Boolean voteFlagTeam;
-    private Integer voteCnt;
+    private Boolean voteFlagMember = false;
+    private Boolean voteFlagTeam = false;
+    private Integer voteCnt = 0;
 
     private Team team;
     private DevPart devPart;
