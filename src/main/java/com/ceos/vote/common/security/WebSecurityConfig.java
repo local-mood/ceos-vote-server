@@ -48,9 +48,9 @@ public class WebSecurityConfig {
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests() //
                 .requestMatchers("/",
-                        "/api/auth/signup",
-                        "/api/auth/login/**",
-                        "/api/auth/login").permitAll()
+                        "/app/auth/signup",
+                        "/app/auth/login/**",
+                        "/app/auth/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling((exceptionHandling) ->
