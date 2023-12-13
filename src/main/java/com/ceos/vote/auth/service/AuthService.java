@@ -64,6 +64,99 @@ public class AuthService {
     }
 
 
+    // Access Token가 만료만 된 (유효한) 토큰인지 검사
+    public boolean validate(String requestAccessTokenInHeader) {
+        String requestRefreshToken = resolveToken(requestAccessTokenInHeader);
+        return jwtTokenProvider.validateTokenOnlyExpired(requestRefreshToken);
+    }
+
+
+    // 토큰 재발급: validate가 true일 때 access, refresh 모두 재발급
+    @Transactional
+    public TokenDto reissue(String requestAccessTokenInHeader, String requestRefreshToken) {
+        String accessToken = resolveToken(requestAccessTokenInHeader);
+
+        Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
+
+        String principal = getPrincipal(accessToken);
+
+        String redisRefreshToken = redisService.getValues("refresh-token:" + SERVER + ":" + principal);
+
+        // 저장된 refresh 없으면 재로그인 요청
+        if (redisRefreshToken == null) {
+            return null;
+        }
+
+        // refresh가 redis와 다르거나 유효하지 않으면 삭제하고 재로그인 요청
+        if (!jwtTokenProvider.validateRefreshToken(requestRefreshToken) ||
+                !redisRefreshToken.equals(requestRefreshToken)) {
+            redisService.deleteValues("refresh-token:" + SERVER + ":" + principal);
+            return null;
+        }
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String authorities = getAuthorities(authentication);
+
+        // 기존 refresh 삭제하고 토큰 재발급 및 저장
+        redisService.deleteValues("refresh-token:" + SERVER + ":" + principal);
+        TokenDto tokenDto = jwtTokenProvider.createToken(principal, authorities);
+        saveRefreshToken(SERVER, principal, tokenDto.getRefreshToken());
+        return tokenDto;
+
+    }
+
+    // 토큰 발급
+    @Transactional
+    public TokenDto generateToken(String provider, String email, String authorities) {
+        //refresh 이미 있을 경우 삭제
+        if (redisService.getValues("refresh-token:" + provider + ":" + email) != null) {
+            redisService.deleteValues("refresh-token:" + provider + ":" + email);
+        }
+
+        // 토큰 재발급 후 저장
+        TokenDto authToken = jwtTokenProvider.createToken(email, authorities);
+        saveRefreshToken(provider, email, authToken.getRefreshToken());
+
+        return authToken;
+    }
+
+
+    // RT를 Redis에 저장
+    @Transactional
+    public void saveRefreshToken(String provider, String principal, String refreshToken) {
+        // 저장할 Redis 키를 생성합
+        String redisKey = "refresh-token:" + provider + ":" + principal;
+
+        redisService.setValuesWithTimeout(redisKey,
+                refreshToken,
+                jwtTokenProvider.getTokenExpirationTime(refreshToken));
+    }
+
+    // 권한 이름 가져오기
+    public String getAuthorities(Authentication authentication) {
+        // 권한 이름들을 ","로 구분하여 하나의 문자열로 변환합니다.
+        return authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+    }
+
+
+    // AT로부터 principal 추출
+    public String getPrincipal(String requestAccessToken) {
+        return jwtTokenProvider.getAuthentication(requestAccessToken).getName();
+    }
+
+
+    // "Bearer {AT}"에서 {AT} 추출
+    public String resolveToken(String requestAccessTokenInHeader) {
+        if (requestAccessTokenInHeader != null && requestAccessTokenInHeader.startsWith("Bearer ")) {
+            return requestAccessTokenInHeader.substring(7);
+        }
+        return null;
+    }
+
+
+
     public boolean findUserByEmail(String email) { return memberRepository.existsByEmail(email);}
     public boolean findUserByUserid(String userid) { return memberRepository.existsByUserid(userid);}
 
