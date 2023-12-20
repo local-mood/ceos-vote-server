@@ -20,5 +20,7 @@ public class Team {
   private Long id;
 
   private String name;
+  private String description;
+  private Integer voteCnt;
 
 }
