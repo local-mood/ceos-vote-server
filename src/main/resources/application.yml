@@ -3,23 +3,17 @@ spring:
   profiles:
     include: secret
 
-  jwt:
-    token:
-      secret: ${jwt.token.secret}
-      access-token-validity-in-seconds: ${jwt.token.access-token-validity-in-seconds}
-      refresh-token-validity-in-seconds: ${jwt.token.refresh-token-validity-in-seconds}
-
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${db.url}
-    username: ${db.username}
-    password: ${db.password}
+    url: ENC(aaX0j72mYzWkdVKfmPSv5K3RI0oVxwToz7mqL8Y8Dv2+8iqO7YaSFVvIl+fuaZKYbxN7wd6zBE0XvbXa8fSBmufq2aRVHVRX+Y71TnkCeOY81CyS1cZX4g==)
+    username: ENC(qOgX3PNBqpY45OYhqZFcoQ==)
+    password: ENC(Zg96EiJQDju2pWAq/nC5vwapLPZL4WLQ)
 
   data:
     redis:
-      host: ${redis.host}
+      host: ENC(EIZI2FGl7luftV7JAzeyjQ==)
       port: 6379
-      password: root1234
+      password: ENC(bSF1EdS4uTZc49wWhYhICDcugXrrIhgV)
 
   jpa:
     database: mysql

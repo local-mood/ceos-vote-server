@@ -21,7 +21,6 @@ import java.util.Date;
 @Component
 @Transactional(readOnly = true)
 @Slf4j
-@PropertySource("classpath:application.yml")
 public class JwtTokenProvider {
 
     private static final String AUTHORITIES_KEY = "role";
