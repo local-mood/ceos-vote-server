@@ -57,4 +57,12 @@ public class Member {
     this.voteFlagTeam = Boolean.TRUE;
   }
 
+  public void patchVoteFlagMember(){
+    this.voteFlagMember = Boolean.TRUE;
+  }
+
+  public void patchVoteCnt(Integer voteCnt){
+    this.voteCnt = voteCnt+1;
+  }
+
 }
