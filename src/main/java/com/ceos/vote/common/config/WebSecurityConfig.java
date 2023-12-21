@@ -50,7 +50,9 @@ public class WebSecurityConfig {
           .authorizeRequests() //
           .requestMatchers("/", "/app/auth/signup", "/app/auth/login/**", "/app/auth/login")
           .permitAll()
-          .requestMatchers("/app/team", "/app/team/**")
+          .requestMatchers("/app/member", "/app/member/**/vote")
+          .permitAll()
+          .requestMatchers("/app/team", "/app/team/**/vote")
           .permitAll()
           .anyRequest().authenticated()
           .and()
