@@ -1,9 +1,9 @@
-package com.ceos.vote.domain.team.controller;
+package com.ceos.vote.domain.member.controller;
 
 import com.ceos.vote.auth.CurrentUser;
 import com.ceos.vote.common.dto.ResponseDto;
 import com.ceos.vote.domain.member.entity.Member;
-import com.ceos.vote.domain.team.service.TeamService;
+import com.ceos.vote.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,23 +14,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/app/team")
-public class TeamController {
+@RequestMapping("app/member")
+public class MemberController {
 
-  private final TeamService teamService;
+  private final MemberService memberService;
 
   @GetMapping("")
-  public ResponseEntity<?> getTeamList() {
+  public ResponseEntity<?> getMemberList() {
 
-    return ResponseDto.ok(teamService.getTeamList());
+    return ResponseDto.ok(memberService.getMemberList());
   }
 
-  @PatchMapping("/{teamId}/vote")
-  public ResponseEntity<?> voteTeam(
+  @PatchMapping("/{memberId}/vote")
+  public ResponseEntity<?> voteMember(
     @CurrentUser Member member,
-    @PathVariable("teamId") Long teamId
+    @PathVariable("memberId") Long memberId
   ) {
-    return ResponseDto.ok(teamService.voteTeam(member, teamId));
+    return ResponseDto.ok(memberService.voteMember(member, memberId));
   }
 
 }

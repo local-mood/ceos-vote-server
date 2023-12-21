@@ -29,14 +29,14 @@ public class TeamService {
   }
 
   @Transactional
-  public TeamDto voteTeam(Member member, Long teamId) {
+  public TeamDto voteTeam(Member currentMember, Long teamId) {
 
-    Boolean voteFlag = member.getVoteFlagTeam();
+    Boolean voteFlag = currentMember.getVoteFlagTeam();
 
     if (!voteFlag) {
       Team team = teamRepository.findById(teamId).orElseThrow();
       team.patchVoteCnt(team.getVoteCnt());
-      member.patchVoteFlagTeam();
+      currentMember.patchVoteFlagTeam();
 
       return TeamDto.builder().team(team).build();
     }
