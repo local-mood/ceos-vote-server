@@ -25,4 +25,12 @@ public class TeamController {
     return ResponseDto.ok(teamService.getTeamList());
   }
 
+  @PatchMapping("/{teamId}")
+  public ResponseEntity<?> voteTeam(
+    @CurrentUser Member member,
+    @PathVariable("teamId") Long teamId
+  ) {
+    return ResponseDto.ok(teamService.voteTeam(member, teamId));
+  }
+
 }
