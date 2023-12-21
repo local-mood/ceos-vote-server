@@ -52,4 +52,9 @@ public class Member {
     this.role = Role.ROLE_USER;
 
   }
+
+  public void patchVoteFlagTeam(){
+    this.voteFlagTeam = Boolean.TRUE;
+  }
+
 }

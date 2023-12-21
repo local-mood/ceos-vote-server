@@ -23,4 +23,8 @@ public class Team {
   private String description;
   private Integer voteCnt;
 
+  public void patchVoteCnt(Integer voteCnt){
+    this.voteCnt = voteCnt+1;
+  }
+
 }

@@ -1,4 +1,4 @@
-package com.ceos.vote.common.security;
+package com.ceos.vote.common.config;
 
 import com.ceos.vote.auth.exception.JwtAuthenticationEntryPoint;
 import com.ceos.vote.auth.jwt.filter.JwtAuthenticationFilter;
@@ -44,21 +44,21 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.httpBasic(HttpBasicConfigurer::disable)
-                .csrf(CsrfConfigurer::disable)
-                .formLogin(FormLoginConfigurer::disable)
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
-                .authorizeRequests() //
-                .requestMatchers("/",
-                        "/app/auth/signup",
-                        "/app/auth/login/**",
-                        "/app/auth/login").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .exceptionHandling((exceptionHandling) ->
-                        exceptionHandling
-                                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                                .accessDeniedHandler(jwtAccessDeniedHandler)
-                );
+          .csrf(CsrfConfigurer::disable)
+          .formLogin(FormLoginConfigurer::disable)
+          .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+          .authorizeRequests() //
+          .requestMatchers("/", "/app/auth/signup", "/app/auth/login/**", "/app/auth/login")
+          .permitAll()
+          .requestMatchers("/app/team", "/app/team/**")
+          .permitAll()
+          .anyRequest().authenticated()
+          .and()
+          .exceptionHandling((exceptionHandling) ->
+            exceptionHandling
+              .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+              .accessDeniedHandler(jwtAccessDeniedHandler)
+          );
 
         return http.build();
     }
