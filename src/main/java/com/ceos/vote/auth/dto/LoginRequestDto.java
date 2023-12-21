@@ -1,4 +1,4 @@
-package com.ceos.vote.auth.jwt.entity;
+package com.ceos.vote.auth.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,6 +11,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class LoginRequestDto {
     private String email;
-
     private String password;
 }
