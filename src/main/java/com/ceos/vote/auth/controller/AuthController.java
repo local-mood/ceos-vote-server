@@ -1,11 +1,11 @@
 package com.ceos.vote.auth.controller;
 
 import com.ceos.vote.auth.service.AuthService;
-import com.ceos.vote.common.dto.NormalResponseDto;
 import com.ceos.vote.auth.jwt.entity.TokenDto;
 import com.ceos.vote.auth.dto.LoginRequestDto;
 import com.ceos.vote.auth.dto.SignupRequestDto;
 
+import com.ceos.vote.common.dto.ResponseDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.server.Cookie;
@@ -23,9 +23,9 @@ public class AuthController {
 
     // 회원가입
     @PostMapping("/signup")
-    public ResponseEntity<NormalResponseDto> join(@RequestBody @Valid SignupRequestDto requestDto) {
+    public ResponseEntity<?> join(@RequestBody @Valid SignupRequestDto requestDto) {
         authService.joinMember(requestDto);
-        return ResponseEntity.ok(NormalResponseDto.success());
+        return ResponseDto.ok();
     }
 
     // 로그인
@@ -90,7 +90,7 @@ public class AuthController {
 
     // 로그아웃
     @PostMapping("/logout")
-    public ResponseEntity<NormalResponseDto> logout(@RequestHeader("Authorization") String requestAccessToken) {
+    public ResponseEntity<?> logout(@RequestHeader("Authorization") String requestAccessToken) {
 
         // Access Token을 무효화하여 로그아웃 처리
         authService.logout(requestAccessToken);
