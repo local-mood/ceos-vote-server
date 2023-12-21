@@ -1,4 +1,4 @@
-package com.ceos.vote.exception;
+package com.ceos.vote.common.exception;
 
 import org.springframework.http.HttpStatus;
 
