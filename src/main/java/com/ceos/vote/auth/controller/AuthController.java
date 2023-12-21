@@ -3,8 +3,8 @@ package com.ceos.vote.auth.controller;
 import com.ceos.vote.auth.service.AuthService;
 import com.ceos.vote.common.dto.NormalResponseDto;
 import com.ceos.vote.auth.jwt.entity.TokenDto;
-import com.ceos.vote.auth.jwt.entity.LoginRequestDto;
-import com.ceos.vote.domain.member.dto.MemberRequestDto;
+import com.ceos.vote.auth.dto.LoginRequestDto;
+import com.ceos.vote.auth.dto.SignupRequestDto;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ public class AuthController {
 
     // 회원가입
     @PostMapping("/signup")
-    public ResponseEntity<NormalResponseDto> join(@RequestBody @Valid MemberRequestDto requestDto) {
+    public ResponseEntity<NormalResponseDto> join(@RequestBody @Valid SignupRequestDto requestDto) {
         authService.joinMember(requestDto);
         return ResponseEntity.ok(NormalResponseDto.success());
     }

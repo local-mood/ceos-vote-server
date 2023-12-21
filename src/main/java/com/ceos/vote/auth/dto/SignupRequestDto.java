@@ -1,8 +1,8 @@
-package com.ceos.vote.domain.member.dto;
+package com.ceos.vote.auth.dto;
 
+import com.ceos.vote.domain.member.entity.DevPart;
 import com.ceos.vote.domain.member.entity.Member;
-import com.ceos.vote.domain.team.entity.Team;
-import com.ceos.vote.domain.devPart.entity.DevPart;
+import com.ceos.vote.domain.team.repository.TeamRepository;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -16,7 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class MemberRequestDto {
+public class SignupRequestDto {
 
     @NotBlank(message = "닉네임은 필수 입력값입니다.")
     private String username;
@@ -33,24 +33,21 @@ public class MemberRequestDto {
             "영문 대소문자, 숫자, 특수문자를 1개 이상 포함해야 합니다.")
     private String password;
 
-    private Boolean voteFlagMember = false;
-    private Boolean voteFlagTeam = false;
-    private Integer voteCnt = 0;
+    private Long team;
 
-    private Team team;
-    private DevPart devPart;
+    private String devPart;
 
-    public Member toMember(PasswordEncoder passwordEncoder) {
+    public Member toMember(PasswordEncoder passwordEncoder, TeamRepository teamRepository) {
         return Member.builder()
                 .username(username)
                 .userid(userid)
                 .password(passwordEncoder.encode(password))
                 .email(email)
-                .voteFlagMember(voteFlagMember)
-                .voteFlagTeam(voteFlagTeam)
-                .voteCnt(voteCnt)
-                .team(team)
-                .devPart(devPart)
+                .voteFlagMember(Boolean.FALSE)
+                .voteFlagTeam(Boolean.FALSE)
+                .voteCnt(0)
+                .team(teamRepository.findById(team).orElseThrow())
+                .devPart(DevPart.valueOf(devPart))
                 .build();
     }
 
