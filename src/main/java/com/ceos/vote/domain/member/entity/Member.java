@@ -1,6 +1,5 @@
 package com.ceos.vote.domain.member.entity;
 
-import com.ceos.vote.domain.devPart.entity.DevPart;
 import com.ceos.vote.domain.team.entity.Team;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -32,8 +31,7 @@ public class Member {
   @JoinColumn(name = "team_id")
   private Team team;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "dev_part_id")
+  @Enumerated(EnumType.STRING)
   private DevPart devPart;
 
   @Enumerated(EnumType.STRING)
