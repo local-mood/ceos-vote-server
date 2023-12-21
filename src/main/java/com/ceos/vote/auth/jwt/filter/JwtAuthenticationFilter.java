@@ -1,8 +1,8 @@
 package com.ceos.vote.auth.jwt.filter;
 
 import com.ceos.vote.auth.jwt.provider.JwtTokenProvider;
-import com.ceos.vote.exception.ErrorCode;
-import com.ceos.vote.exception.CeosException;
+import com.ceos.vote.common.exception.ErrorCode;
+import com.ceos.vote.common.exception.CeosException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

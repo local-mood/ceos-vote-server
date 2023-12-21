@@ -1,13 +1,14 @@
 package com.ceos.vote.auth.service;
 
 import com.ceos.vote.auth.jwt.entity.TokenDto;
-import com.ceos.vote.exception.ErrorCode;
-import com.ceos.vote.exception.CeosException;
+import com.ceos.vote.common.exception.ErrorCode;
+import com.ceos.vote.common.exception.CeosException;
 import com.ceos.vote.auth.jwt.provider.JwtTokenProvider;
-import com.ceos.vote.auth.jwt.entity.LoginRequestDto;
-import com.ceos.vote.domain.member.dto.MemberRequestDto;
+import com.ceos.vote.auth.dto.LoginRequestDto;
+import com.ceos.vote.auth.dto.SignupRequestDto;
 import com.ceos.vote.domain.member.entity.Member;
 import com.ceos.vote.domain.member.repository.MemberRepository;
+import com.ceos.vote.domain.team.repository.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -32,11 +33,12 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
 
     private final MemberRepository memberRepository;
+    private final TeamRepository teamRepository;
     private final String SERVER = "Server";
 
     // 회원가입
     @Transactional
-    public void joinMember(MemberRequestDto requestDto) {
+    public void joinMember(SignupRequestDto requestDto) {
 
         // 이메일, ID 중복 검사
         if (findUserByEmail(requestDto.getEmail()))
@@ -45,7 +47,7 @@ public class AuthService {
         if (findUserByUserid(requestDto.getUserid()))
             throw new CeosException(ErrorCode.ALREADY_MEMBER_ID);
 
-        Member member = requestDto.toMember(passwordEncoder);
+        Member member = requestDto.toMember(passwordEncoder, teamRepository);
         memberRepository.save(member);
     }
 
