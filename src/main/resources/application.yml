@@ -11,9 +11,9 @@ spring:
 
   data:
     redis:
-      host: ENC(EIZI2FGl7luftV7JAzeyjQ==)
+      host: ENC(n6ejidlXbMDGdngiGk8kq0uWRObFa34G)
       port: 6379
-      password: ENC(bSF1EdS4uTZc49wWhYhICDcugXrrIhgV)
+      password: ENC(FIeAY3yR5U1sI9DOAZT0YnIrevSXfWho)
 
   jpa:
     database: mysql
