@@ -23,9 +23,9 @@ public class AuthController {
 
     // 회원가입
     @PostMapping("/signup")
-    public ResponseEntity<?> join(@RequestBody @Valid SignupRequestDto requestDto) {
-        authService.joinMember(requestDto);
-        return ResponseDto.ok();
+    public ResponseEntity<?> join(@RequestBody @Valid SignupRequestDto signupRequest) {
+
+        return ResponseDto.ok(authService.joinMember(signupRequest));
     }
 
     // 로그인
@@ -40,10 +40,8 @@ public class AuthController {
                 .secure(true)
                 .sameSite(Cookie.SameSite.NONE.attributeValue())    //서드파티 쿠키 사용 허용
                 .build();
-        return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, httpCookie.toString())
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenDto.getAccessToken())
-                .build();
+
+        return ResponseDto.ok(tokenDto);
     }
 
     // 토큰 유효성 검사
