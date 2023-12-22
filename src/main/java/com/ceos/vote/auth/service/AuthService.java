@@ -38,7 +38,7 @@ public class AuthService {
 
     // 회원가입
     @Transactional
-    public void joinMember(SignupRequestDto requestDto) {
+    public Member joinMember(SignupRequestDto requestDto) {
 
         // 이메일, ID 중복 검사
         if (findUserByEmail(requestDto.getEmail()))
@@ -49,6 +49,8 @@ public class AuthService {
 
         Member member = requestDto.toMember(passwordEncoder, teamRepository);
         memberRepository.save(member);
+
+        return member;
     }
 
 

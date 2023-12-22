@@ -6,6 +6,7 @@ import com.ceos.vote.auth.dto.LoginRequestDto;
 import com.ceos.vote.auth.dto.SignupRequestDto;
 
 import com.ceos.vote.common.dto.ResponseDto;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.server.Cookie;
@@ -23,9 +24,9 @@ public class AuthController {
 
     // 회원가입
     @PostMapping("/signup")
-    public ResponseEntity<?> join(@RequestBody @Valid SignupRequestDto requestDto) {
-        authService.joinMember(requestDto);
-        return ResponseDto.ok();
+    public ResponseEntity<?> join(@RequestBody @Valid SignupRequestDto signupRequest) {
+
+        return ResponseDto.ok(authService.joinMember(signupRequest));
     }
 
     // 로그인
@@ -40,15 +41,16 @@ public class AuthController {
                 .secure(true)
                 .sameSite(Cookie.SameSite.NONE.attributeValue())    //서드파티 쿠키 사용 허용
                 .build();
-        return ResponseEntity.ok()
-                .header(HttpHeaders.SET_COOKIE, httpCookie.toString())
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenDto.getAccessToken())
-                .build();
+
+        return ResponseDto.ok(tokenDto);
     }
 
     // 토큰 유효성 검사
     @PostMapping("/validate")
-    public ResponseEntity<?> validate(@RequestHeader("Authorization") String requestAccessToken) {
+    public ResponseEntity<?> validate(HttpServletRequest request) {
+
+        String requestAccessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+
         if (!authService.validate(requestAccessToken)) {
             return ResponseEntity.ok().build();
         } else {
@@ -58,8 +60,9 @@ public class AuthController {
 
     // 토큰 재발급
     @PostMapping("/reissue")
-    public ResponseEntity<?> reissue(@CookieValue(name = "refresh-token") String requestRefreshToken,
-                                     @RequestHeader("Authorization") String requestAccessToken) {
+    public ResponseEntity<?> reissue(@CookieValue(name = "refresh-token") String requestRefreshToken, HttpServletRequest request) {
+
+        String requestAccessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         TokenDto newAuthToken = authService.reissue(requestAccessToken, requestRefreshToken);
 
@@ -90,7 +93,9 @@ public class AuthController {
 
     // 로그아웃
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(@RequestHeader("Authorization") String requestAccessToken) {
+    public ResponseEntity<?> logout(HttpServletRequest request) {
+
+        String requestAccessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         // Access Token을 무효화하여 로그아웃 처리
         authService.logout(requestAccessToken);
@@ -99,7 +104,6 @@ public class AuthController {
                 .maxAge(0)
                 .path("/")
                 .build();
-
 
         return ResponseEntity.status(HttpStatus.OK)
                 .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
