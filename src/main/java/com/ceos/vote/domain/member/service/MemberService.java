@@ -36,6 +36,7 @@ public class MemberService {
       Member member = memberRepository.findById(memberId).orElseThrow();
       member.patchVoteCnt(member.getVoteCnt());
       currentMember.patchVoteFlagMember();
+      memberRepository.save(currentMember);
 
       return MemberDto.builder().member(member).build();
     }
