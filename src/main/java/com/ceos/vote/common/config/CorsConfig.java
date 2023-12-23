@@ -10,7 +10,7 @@ import org.springframework.web.filter.CorsFilter;
 @Configuration
 public class CorsConfig {
 
-  @Value("${clientUrl}")
+  @Value("${client-url}")
   private String clientUrl;
 
   @Bean
