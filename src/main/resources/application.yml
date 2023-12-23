@@ -44,4 +44,4 @@ springdoc:
   swagger-ui:
     path: /swagger-vote.html
 
-clientUrl: ENC(xZJ/NyHwyN5VEY3W6Btq++gSySY0VzGxn9iJuP25Wj3vmwGsulhgRQ==)
+client-url: ENC(xZJ/NyHwyN5VEY3W6Btq++gSySY0VzGxn9iJuP25Wj3vmwGsulhgRQ==)
