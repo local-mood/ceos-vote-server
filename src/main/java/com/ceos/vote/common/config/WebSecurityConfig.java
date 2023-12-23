@@ -26,6 +26,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig {
 
+    private final CorsConfig corsConfig;
+
     private final JwtTokenProvider jwtTokenProvider;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
@@ -43,10 +45,22 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.httpBasic(HttpBasicConfigurer::disable)
+
+        http
+          .httpBasic(HttpBasicConfigurer::disable)
           .csrf(CsrfConfigurer::disable)
-          .formLogin(FormLoginConfigurer::disable)
+          .formLogin(FormLoginConfigurer::disable);
+
+        http
+          .addFilter(corsConfig.corsFilter())
           .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+          .exceptionHandling((exceptionHandling) ->
+            exceptionHandling
+              .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+              .accessDeniedHandler(jwtAccessDeniedHandler)
+          );
+
+        http
           .authorizeRequests() //
           .requestMatchers("/", "/app/auth/signup", "/app/auth/login/**", "/app/auth/login")
           .permitAll()
@@ -54,13 +68,7 @@ public class WebSecurityConfig {
           .permitAll()
           .requestMatchers("/app/team", "/app/team/**/vote")
           .permitAll()
-          .anyRequest().authenticated()
-          .and()
-          .exceptionHandling((exceptionHandling) ->
-            exceptionHandling
-              .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-              .accessDeniedHandler(jwtAccessDeniedHandler)
-          );
+          .anyRequest().authenticated();
 
         return http.build();
     }
