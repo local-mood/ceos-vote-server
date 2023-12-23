@@ -37,6 +37,7 @@ public class AuthController {
 
         HttpCookie httpCookie = ResponseCookie.from("refresh-token", tokenDto.getRefreshToken())
                 .maxAge(COOKIE_EXPIRATION)
+                .path("/")
                 .httpOnly(true)
                 .secure(true)
                 .sameSite(Cookie.SameSite.NONE.attributeValue())    //서드파티 쿠키 사용 허용
@@ -74,6 +75,7 @@ public class AuthController {
             // 새로운 토큰 발급, 반환
             ResponseCookie responseCookie = ResponseCookie.from("refresh-token", newAuthToken.getRefreshToken())
                     .maxAge(COOKIE_EXPIRATION)
+                    .path("/")
                     .httpOnly(true)
                     .secure(true)
                     .sameSite(Cookie.SameSite.NONE.attributeValue())
