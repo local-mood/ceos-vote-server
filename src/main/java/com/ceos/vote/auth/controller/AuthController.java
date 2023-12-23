@@ -9,6 +9,7 @@ import com.ceos.vote.common.dto.ResponseDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.server.Cookie;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/app/auth")
 @RequiredArgsConstructor
 public class AuthController {
+
+    @Value("${domain}")
+    private String domain;
 
     private final long COOKIE_EXPIRATION = 7776000; // 90일
 
@@ -38,6 +42,7 @@ public class AuthController {
         HttpCookie httpCookie = ResponseCookie.from("refresh-token", tokenDto.getRefreshToken())
                 .maxAge(COOKIE_EXPIRATION)
                 .path("/")
+                .domain(domain)
                 .httpOnly(true)
                 .secure(true)
                 .sameSite(Cookie.SameSite.NONE.attributeValue())    //서드파티 쿠키 사용 허용
@@ -76,6 +81,7 @@ public class AuthController {
             ResponseCookie responseCookie = ResponseCookie.from("refresh-token", newAuthToken.getRefreshToken())
                     .maxAge(COOKIE_EXPIRATION)
                     .path("/")
+                    .domain(domain)
                     .httpOnly(true)
                     .secure(true)
                     .sameSite(Cookie.SameSite.NONE.attributeValue())
