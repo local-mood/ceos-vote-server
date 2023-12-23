@@ -44,7 +44,7 @@ public class AuthController {
                 .path("/")
                 .domain(domain)
                 .httpOnly(true)
-                .secure(true)
+                .secure(false)
                 .sameSite(Cookie.SameSite.NONE.attributeValue())    //서드파티 쿠키 사용 허용
                 .build();
 
@@ -83,7 +83,7 @@ public class AuthController {
                     .path("/")
                     .domain(domain)
                     .httpOnly(true)
-                    .secure(true)
+                    .secure(false)
                     .sameSite(Cookie.SameSite.NONE.attributeValue())
                     .build();
 
