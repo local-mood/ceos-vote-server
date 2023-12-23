@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 
 @Data
@@ -16,12 +17,12 @@ public class ResponseDto<T> implements Serializable {
   private String code_desc;
   private T data;
 
-  public static <T> ResponseEntity<ResponseDto<T>> ok() {
-    return ResponseEntity.ok(new ResponseDto<T>(200, "OK", null));
+  public static <T> ResponseEntity<ResponseDto<T>> ok(T data) {
+    return ResponseEntity.ok().body(new ResponseDto<T>(200, "OK", data));
   }
 
-  public static <T> ResponseEntity<ResponseDto<T>> ok(T data) {
-    return ResponseEntity.ok(new ResponseDto<T>(200, "OK", data));
+  public static <T> ResponseEntity<ResponseDto<T>> ok(HttpHeaders headers, T data) {
+    return ResponseEntity.ok().headers(headers).body(new ResponseDto<T>(200, "OK", data));
   }
 
 }
