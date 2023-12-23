@@ -2,7 +2,7 @@ package com.ceos.vote.auth.dto;
 
 import com.ceos.vote.domain.member.entity.DevPart;
 import com.ceos.vote.domain.member.entity.Member;
-import com.ceos.vote.domain.team.repository.TeamRepository;
+import com.ceos.vote.domain.team.entity.Team;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -33,11 +33,11 @@ public class SignupRequestDto {
             "영문 대소문자, 숫자, 특수문자를 1개 이상 포함해야 합니다.")
     private String password;
 
-    private Long team;
+    private Long teamId;
 
-    private String devPart;
+    private Integer devPartId;
 
-    public Member toMember(PasswordEncoder passwordEncoder, TeamRepository teamRepository) {
+    public Member toMember(PasswordEncoder passwordEncoder, Team team) {
         return Member.builder()
                 .username(username)
                 .userid(userid)
@@ -46,8 +46,8 @@ public class SignupRequestDto {
                 .voteFlagMember(Boolean.FALSE)
                 .voteFlagTeam(Boolean.FALSE)
                 .voteCnt(0)
-                .team(teamRepository.findById(team).orElseThrow())
-                .devPart(DevPart.valueOf(devPart))
+                .team(team)
+                .devPart(DevPart.of(devPartId))
                 .build();
     }
 

@@ -6,8 +6,10 @@ import com.ceos.vote.common.exception.CeosException;
 import com.ceos.vote.auth.jwt.provider.JwtTokenProvider;
 import com.ceos.vote.auth.dto.LoginRequestDto;
 import com.ceos.vote.auth.dto.SignupRequestDto;
+import com.ceos.vote.domain.member.entity.DevPart;
 import com.ceos.vote.domain.member.entity.Member;
 import com.ceos.vote.domain.member.repository.MemberRepository;
+import com.ceos.vote.domain.team.entity.Team;
 import com.ceos.vote.domain.team.repository.TeamRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -47,7 +49,9 @@ public class AuthService {
         if (findUserByUserid(requestDto.getUserid()))
             throw new CeosException(ErrorCode.ALREADY_MEMBER_ID);
 
-        Member member = requestDto.toMember(passwordEncoder, teamRepository);
+        Team team = teamRepository.findById(requestDto.getTeamId()).orElseThrow();
+
+        Member member = requestDto.toMember(passwordEncoder, team);
         memberRepository.save(member);
 
         return member;
