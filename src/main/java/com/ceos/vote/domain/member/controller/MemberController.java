@@ -2,6 +2,7 @@ package com.ceos.vote.domain.member.controller;
 
 import com.ceos.vote.auth.CurrentUser;
 import com.ceos.vote.common.dto.ResponseDto;
+import com.ceos.vote.domain.member.dto.MemberDto;
 import com.ceos.vote.domain.member.entity.Member;
 import com.ceos.vote.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,12 @@ public class MemberController {
     @PathVariable("memberId") Long memberId
   ) {
     return ResponseDto.ok(memberService.voteMember(member, memberId));
+  }
+
+  @GetMapping("/info")
+  public ResponseEntity<?> getCurrentMemberInfo(@CurrentUser Member member) {
+
+    return ResponseDto.ok(memberService.getCurrentMemberInfo(member));
   }
 
 }

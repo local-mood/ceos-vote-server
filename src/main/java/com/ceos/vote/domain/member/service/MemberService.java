@@ -1,5 +1,6 @@
 package com.ceos.vote.domain.member.service;
 
+import com.ceos.vote.common.dto.ResponseDto;
 import com.ceos.vote.common.exception.CeosException;
 import com.ceos.vote.common.exception.ErrorCode;
 import com.ceos.vote.domain.member.dto.MemberDto;
@@ -44,6 +45,14 @@ public class MemberService {
       throw new CeosException(ErrorCode.ALREADY_VOTED_USER);
     }
 
+  }
+
+  public MemberDto getCurrentMemberInfo(Member currentMember) {
+
+    Member member = memberRepository.findById(currentMember.getId()).orElseThrow();
+    MemberDto memberDto = MemberDto.builder().member(member).build();
+
+    return MemberDto.builder().member(member).build();
   }
 
 }
