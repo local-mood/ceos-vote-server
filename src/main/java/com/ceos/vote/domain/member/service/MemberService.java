@@ -33,19 +33,22 @@ public class MemberService {
   @Transactional
   public MemberDto voteMember(Member currentMember, Long memberId) {
 
-    Boolean voteFlag = currentMember.getVoteFlagMember();
+    Member voteMember = memberRepository.findById(memberId).orElseThrow();
 
-    if (!voteFlag) {
-      Member member = memberRepository.findById(memberId).orElseThrow();
-      member.patchVoteCnt(member.getVoteCnt());
-      currentMember.patchVoteFlagMember();
-      memberRepository.save(currentMember);
-
-      return MemberDto.builder().member(member).build();
+    if (voteMember.getDevPart().equals(DevPart.BACKEND) && !currentMember.getVoteFlagBe()){
+      currentMember.patchVoteFlagBe();
+    }
+    else if (voteMember.getDevPart().equals(DevPart.FRONTEND) && !currentMember.getVoteFlagFe()){
+      currentMember.patchVoteFlagFe();
     }
     else {
       throw new CeosException(ErrorCode.ALREADY_VOTED_USER);
     }
+
+    voteMember.patchVoteCnt(voteMember.getVoteCnt());
+    memberRepository.save(currentMember);
+
+    return MemberDto.builder().member(voteMember).build();
 
   }
 
