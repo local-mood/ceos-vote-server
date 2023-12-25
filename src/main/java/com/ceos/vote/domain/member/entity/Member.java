@@ -22,7 +22,8 @@ public class Member {
   private String email;
   private String password;
 
-  private Boolean voteFlagMember;
+  private Boolean voteFlagBe;
+  private Boolean voteFlagFe;
   private Boolean voteFlagTeam;
 
   private Integer voteCnt;
@@ -38,13 +39,14 @@ public class Member {
   private Role role;
 
   @Builder
-  public Member(Long id, String username, String userid, String email, String password, Boolean voteFlagMember, Boolean voteFlagTeam, Integer voteCnt, Team team, DevPart devPart) {
+  public Member(Long id, String username, String userid, String email, String password, Boolean voteFlagBe, Boolean voteFlagFe, Boolean voteFlagTeam, Integer voteCnt, Team team, DevPart devPart) {
     this.id = id;
     this.username = username;
     this.userid = userid;
     this.email = email;
     this.password = password;
-    this.voteFlagMember = voteFlagMember;
+    this.voteFlagBe = voteFlagBe;
+    this.voteFlagFe = voteFlagFe;
     this.voteFlagTeam = voteFlagTeam;
     this.voteCnt = voteCnt;
     this.team = team;
@@ -57,8 +59,12 @@ public class Member {
     this.voteFlagTeam = Boolean.TRUE;
   }
 
-  public void patchVoteFlagMember(){
-    this.voteFlagMember = Boolean.TRUE;
+  public void patchVoteFlagBe(){
+    this.voteFlagBe = Boolean.TRUE;
+  }
+
+  public void patchVoteFlagFe(){
+    this.voteFlagFe = Boolean.TRUE;
   }
 
   public void patchVoteCnt(Integer voteCnt){
