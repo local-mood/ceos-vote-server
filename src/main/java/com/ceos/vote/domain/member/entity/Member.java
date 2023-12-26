@@ -22,6 +22,7 @@ public class Member {
   private String email;
   private String password;
 
+  private Boolean isCandidate;
   private Boolean voteFlagBe;
   private Boolean voteFlagFe;
   private Boolean voteFlagTeam;
@@ -39,12 +40,13 @@ public class Member {
   private Role role;
 
   @Builder
-  public Member(Long id, String username, String userid, String email, String password, Boolean voteFlagBe, Boolean voteFlagFe, Boolean voteFlagTeam, Integer voteCnt, Team team, DevPart devPart) {
+  public Member(Long id, String username, String userid, String email, String password, Boolean isCandidate, Boolean voteFlagBe, Boolean voteFlagFe, Boolean voteFlagTeam, Integer voteCnt, Team team, DevPart devPart) {
     this.id = id;
     this.username = username;
     this.userid = userid;
     this.email = email;
     this.password = password;
+    this.isCandidate = false;
     this.voteFlagBe = voteFlagBe;
     this.voteFlagFe = voteFlagFe;
     this.voteFlagTeam = voteFlagTeam;

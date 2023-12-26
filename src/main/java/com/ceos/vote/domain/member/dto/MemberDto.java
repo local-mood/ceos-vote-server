@@ -13,6 +13,7 @@ public class MemberDto {
   private String name;
   private String teamName;
   private Integer voteCnt;
+  private Boolean isCandidate;
 
   @Builder
   public MemberDto(Member member) {
@@ -20,6 +21,8 @@ public class MemberDto {
     this.name = member.getUsername();
     this.teamName = member.getTeam().getName();
     this.voteCnt = member.getVoteCnt();
+    this.isCandidate = member.getIsCandidate();
   }
 
 }
+
